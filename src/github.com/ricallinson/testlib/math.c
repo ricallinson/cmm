@@ -1,4 +1,4 @@
-// Module Math
+// Module Math.
 
 // Private attribute.
 int current = 0;
@@ -11,4 +11,8 @@ int getCurrent() {
 // Public function.
 int MathIncrement(int x) {
     return x + getCurrent();
+}
+
+int MathNext() {
+    return MathIncrement(0);
 }
