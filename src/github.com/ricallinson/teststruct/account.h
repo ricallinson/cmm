@@ -4,8 +4,9 @@
 #define github_com_ricallinson_teststruct_account
 typedef struct {
     int id;
-    int firstname;
-    int lastname;
+    char *firstname;
+    char *lastname;
 } Account;
-Account AccountCreate(int firstname, int lastname);
+Account AccountCreate(char *firstname, char *lastname);
+void AccountToString(Account *account, char *s);
 #endif

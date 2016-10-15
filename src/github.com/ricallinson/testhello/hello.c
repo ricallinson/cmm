@@ -1,10 +1,13 @@
-#include <stdio.h>
+// Entry Point.
 
+#include <stdio.h>
 #include "github.com/ricallinson/teststruct/account.h"
 
 int main() {
-    Account a = AccountCreate(1, 2);
-    Account b = AccountCreate(3, 4);
-    printf("Account ID: %d\n", b.id);
+    Account a = AccountCreate("James", "Jones");
+    Account b = AccountCreate("Rob", "Red");
+    char *s;
+    AccountToString(s, &b);
+    printf("%s\n", s);
     return 0;
 }
