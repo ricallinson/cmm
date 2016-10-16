@@ -5,11 +5,11 @@
 #include "github.com/ricallinson/teststruct/account.h"
 
 int main() {
-    Account a = AccountCreate("James", "Jones");
+    AccountCreate("James", "Jones");
     MathNext();
     Account b = AccountCreate("Rob", "Red");
-    char *s;
-    AccountToString(&b, s);
-    printf("%s\n", s);
+    // char *s;
+    // AccountToString(&b, s);
+    // printf("%s\n", s);
     return 0;
 }
