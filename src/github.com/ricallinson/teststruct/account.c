@@ -1,5 +1,6 @@
 // Module Account.
 
+#include <stdlib.h>
 #include <stdio.h>
 #include "github.com/ricallinson/testlib/math.h"
 
@@ -18,6 +19,8 @@ Account AccountCreate(char *firstname, char *lastname) {
     return a;
 }
 
-void AccountToString(Account *account, char *s) {
+char *AccountToString(Account *account) {
+    char *s = malloc(30);
     sprintf(s, "%d: %s %s", account->id, account->firstname, account->lastname);
+    return s;
 }

@@ -1,10 +1,10 @@
 #!/bin/bash
 
-rm -rf ./_gcov
-mkdir _gcov
-cd _gcov
+CMMROOT=$(pwd)
 
-CMMROOT=..
+rm -rf $CMMROOT/_gcov
+mkdir $CMMROOT/_gcov
+cd $CMMROOT/_gcov
 
 gcc -Wall -fprofile-arcs -ftest-coverage -I $CMMROOT/src -o $CMMROOT/_gcov/hello \
     $CMMROOT/src/github.com/ricallinson/testhello/hello.c \
