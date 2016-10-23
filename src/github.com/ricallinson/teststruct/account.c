@@ -19,8 +19,9 @@ Account AccountCreate(char *firstname, char *lastname) {
     return a;
 }
 
-char *AccountToString(Account *account) {
-    char *s = malloc(30);
+// Returns a pointer that needs freeing after use.
+char *AccountToChars(Account *account) {
+    char *s = malloc(30); // Get length of memory required for string.
     sprintf(s, "%d: %s %s", account->id, account->firstname, account->lastname);
     return s;
 }
