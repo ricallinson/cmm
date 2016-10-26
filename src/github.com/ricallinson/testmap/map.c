@@ -16,7 +16,37 @@ typedef struct {
 } Map;
 
 MapItem *createMapItem(char *key, char *value) {
-    return NULL;
+    MapItem *item = malloc(sizeof(MapItem));
+    if (item == NULL) {
+        return NULL;
+    }
+    item->key = strdup(key);
+    if (item->key == NULL) {
+        free(item);
+        return NULL;
+    }
+    item->value = strdup(value);
+    if (item->value == NULL) {
+        free(item->key);
+        free(item);
+        return NULL;
+    }
+    item->prev = malloc(sizeof(MapItem));
+    if (item->prev == NULL) {
+        free(item->key);
+        free(item->value);
+        free(item);
+        return NULL;
+    }
+    item->next = malloc(sizeof(MapItem));
+    if (item->next == NULL) {
+        free(item->key);
+        free(item->value);
+        free(item->prev);
+        free(item);
+        return NULL;
+    }
+    return item;
 }
 
 MapItem *findMapItem(Map *map, char *key) {
@@ -69,12 +99,13 @@ char *MapStringGet(Map *map, char *key) {
 void MapStringPut(Map *map, char *key, char *value) {
     // Try and find the key.
     MapItem *item = findMapItem(map, key);
+    // If found update its value.
     if (item != NULL) {
         free(item->value);
         item->value = strdup(value);
         return;
     }
-    // If found update value.
-    // Else, create a new MapItem and copy key and value into it.
+    // Else, create a new MapItem and copy the key and value into it.
+
     // Point to the new MapItem from the last MapItem.
 }
