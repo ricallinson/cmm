@@ -1,10 +1,109 @@
-#!/bin/bash
+# Traverse up in directory tree to find containing folder.
+cmm_find_up() {
+  local path
+  path=$1
+  while [ "$path" != "" ] && [ ! -d "$path/$2" ]; do
+    path=${path%/*}
+  done
+  echo "$path"
+}
 
-CMMROOT=.
+# Find the first `src` directory above the given directory.
+cmm_find_src() {
+  local dir
+  dir="$(cmm_find_up $1 'src')"
+  if [ -e "$dir/src" ]; then
+    echo "$dir/src"
+  fi
+}
 
-# Copy all *.c files into the "pkg" directory and generate the *.h files.
+# Check if the given directory exists.
+cmm_resolve() {
+    cd "$1" 2>/dev/null || return $?  # cd to desired directory; if fail, quell any error messages but return exit status
+    echo "`pwd -P`" # output full, link-resolved path
+}
 
-gcc -I $CMMROOT/pkg -o $CMMROOT/bin/testhello \
-    $CMMROOT/pkg/github.com/ricallinson/testhello/hello.c \
-    $CMMROOT/pkg/github.com/ricallinson/testlib/math.c \
-    $CMMROOT/pkg/github.com/ricallinson/teststruct/account.c
+cmm() {
+    case $1 in
+    "help" )
+        echo
+        echo "C Minus Minus"
+        echo
+        echo "Usage:"
+        echo
+        echo "    cmm help                    show this message"
+        echo "    cmm here                    set the current directory as the C Minus Minus workspace"
+        echo "    cmm current                 print current workspace directory"
+        echo "    cmm version                 print C Minus Minus version"
+        echo ""
+        echo "    TODO"
+        echo ""
+        echo "    cmm env                     print C Minus Minus environment information"
+        echo "    cmm get                     download and install packages and dependencies"
+        echo "    cmm test                    test packages"
+        echo "    cmm install                 compile and install packages and dependencies"
+        echo
+    ;;
+
+    "here" )
+        local wPath
+        if [ -z $2 ]; then
+            wPath=$(cmm_find_src $PWD)
+            wPath=${wPath%/*}
+        else
+            wPath="`cmm_resolve \"$2\"`"
+        fi
+        if [ -z $wPath ]; then
+            echo
+            echo "This command must be run in a C Minus Minus workspace"
+            echo
+            return 0
+        fi
+        mkdir -p $wPath/bin
+        mkdir -p $wPath/src
+        export CMMPATH=$wPath
+        export PATH=$PATH:$CMMPATH/bin
+
+        echo
+        echo "Workspace set to $CMMPATH"
+        echo
+    ;;
+
+    "current" )
+        echo
+        echo "Workspace set to $CMMPATH"
+        echo
+    ;;
+
+    "version" )
+        echo
+        echo "C Minus Minus v0.0.1"
+        echo
+    ;;
+
+    "env" )
+        echo
+        echo "Not implemented yet"
+        echo
+    ;;
+
+    "get" )
+        echo
+        echo "Not implemented yet"
+        echo
+    ;;
+
+    "test" )
+        echo
+        echo "Not implemented yet"
+        echo
+    ;;
+
+    "install" )
+        echo
+        echo "Not implemented yet"
+        echo
+    ;;
+
+    esac
+}
