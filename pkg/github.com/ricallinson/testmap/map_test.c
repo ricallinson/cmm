@@ -7,5 +7,5 @@
 int main() {
     Map *map = MapStringCreate();
     MapStringPut(map, "foo", "123");
-    MapStringDelete(map);
+    MapStringFree(map);
 }

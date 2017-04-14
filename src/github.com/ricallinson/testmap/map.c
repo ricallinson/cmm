@@ -80,12 +80,13 @@ Map *MapStringCreate() {
     return map;
 }
 
-void MapStringDelete(Map *map) {
+int MapStringFree(Map *map) {
     if (map != NULL) {
         free(map->first);
         free(map->last);
         free(map);
     }
+    return 0
 }
 
 char *MapStringGet(Map *map, char *key) {

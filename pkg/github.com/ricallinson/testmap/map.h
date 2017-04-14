@@ -14,6 +14,7 @@ typedef struct {
     long length;
 } Map;
 Map *MapStringCreate();
-void MapStringDelete(Map *map);
+int MapStringFree(Map *map);
+char *MapStringGet(Map *map, char *key);
 void MapStringPut(Map *map, char *key, char *value);
 #endif
