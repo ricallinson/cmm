@@ -9,11 +9,11 @@ int getCurrent() {
 }
 
 // Public function.
-int _Increment(int x) {
+int TestlibIncrement(int x) {
     return x + getCurrent();
 }
 
 // Public function.
-int _Next() {
+int TestlibNext() {
     return MathIncrement(0);
 }

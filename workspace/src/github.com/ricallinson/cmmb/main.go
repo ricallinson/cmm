@@ -89,8 +89,14 @@ func findMissingStuctFunctions(b []byte) []byte {
 	return b
 }
 
+func findPackageName(file string) []byte {
+	pkgName := path.Base(path.Dir(file))
+	return []byte(strings.Title(pkgName))
+}
+
 // Replace '_' for functions starting '_' with the packages parent directory name but starting with an uppercase char.
-func insertPackageNameIntoFunctionName(b []byte) []byte {
+func insertPackageNameIntoFunctionName(pkgName []byte, b []byte) []byte {
+	b = bytes.Replace(b, []byte("_"), pkgName, -1)
 	return b
 }
 
@@ -107,7 +113,8 @@ func generatePackageFile(srcFile string) {
 		panic(err1)
 	}
 	b = findMissingStuctFunctions(b)
-	b = insertPackageNameIntoFunctionName(b)
+	pkgName := findPackageName(srcFile)
+	b = insertPackageNameIntoFunctionName(pkgName, b)
 	// Save the generated file into the 'pkg' directory.
 	pkgFile := strings.Replace(srcFile, srcDir, pkgDir, 1)
 	if err := os.MkdirAll(path.Dir(pkgFile), 0777); err != nil {
@@ -116,7 +123,7 @@ func generatePackageFile(srcFile string) {
 	if err := ioutil.WriteFile(pkgFile, b, 0777); err != nil {
 		panic(err)
 	}
-	fmt.Println(pkgFile)
+	fmt.Println(string(pkgName), pkgFile)
 }
 
 func generatePackageHeaderFiles(files []string) {
