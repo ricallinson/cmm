@@ -6,15 +6,15 @@ An experiment in coding C differently.
 
 Steal all the good things from Go.
 
-* A workspace is a directory with `src`, `pkg` and 'bin' sub directories.
+* A workspace is a directory with `src`, `pkg` and `bin` sub directories.
 * A package directory path under the `src` sub directory is a URI to a git repository.
 * Path based `imports` are be resolved by using the path segments as a URI for a `git clone` should the package path not exist in the `src` directory.
-* A package directory contains *.c files (no *.h files).
-* Header files are generated automatically from publicly declared functions or variables.
+* A package directory contains `*.c` files (no `*.h` files).
+* Header files are generated automatically from publicly declared functions and variables.
 * Public functions or variables must start with the packages directory name and a capital letter.
 * An `_` can be used to start a function or variable name and will be replaced with the packages directory name, starting with a capital letter.
-* A publicly declared `struct` must have _MallocStructName() and _FreeStructName() functions which should manage all memory for that `struct`.
-* If a publicly declared `struct` does not have _MallocStructName() or _FreeStructName() functions an __attempt__ will be made to create them.
+* A publicly declared `struct` must have `_MallocStructName()` and `_FreeStructName()` functions which should manage all memory for that `struct`.
+* If a publicly declared `struct` does not have `_MallocStructName()` or `_FreeStructName()` functions an __attempt__ will be made to create them.
 * The `src` directory must contain __all__ code required to compile the binary (no linked binaries are allowed).
 * The `pkg` directory contains all generated code made from the `src` directory.
 * The `bin` directory contains compiled binaries installed via this workspace.
