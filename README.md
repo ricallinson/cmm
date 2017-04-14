@@ -44,7 +44,7 @@ Create a new workspace at the given directory;
 
 Download and install packages and dependencies for the given URI;
 
-	cmm get <URI>
+	cmm get <Package URI>
 
 Execute all `_test.c` files in the current directory;
 

@@ -31,17 +31,13 @@ cmm() {
         echo
         echo "Usage:"
         echo
-        echo "    cmm help                    show this message"
-        echo "    cmm here                    set the current directory as the C Minus Minus workspace"
-        echo "    cmm current                 print current workspace directory"
-        echo "    cmm version                 print C Minus Minus version"
-        echo ""
-        echo "    TODO"
-        echo ""
         echo "    cmm env                     print C Minus Minus environment information"
         echo "    cmm get                     download and install packages and dependencies"
-        echo "    cmm test                    test packages"
+        echo "    cmm help                    show this message"
+        echo "    cmm here                    set the current directory as the C Minus Minus workspace"
         echo "    cmm install                 compile and install packages and dependencies"
+        echo "    cmm test                    test packages"
+        echo "    cmm version                 print C Minus Minus version"
         echo
     ;;
 
@@ -69,12 +65,6 @@ cmm() {
         echo
     ;;
 
-    "current" )
-        echo
-        echo "Workspace set to $CMMPATH"
-        echo
-    ;;
-
     "version" )
         echo
         echo "C Minus Minus v0.0.1"
@@ -83,7 +73,7 @@ cmm() {
 
     "env" )
         echo
-        echo "Not implemented yet"
+        echo "CMMPATH=$CMMPATH"
         echo
     ;;
 
@@ -94,12 +84,18 @@ cmm() {
     ;;
 
     "test" )
+        # Walk all "_test.c" files in the current directory to find all package dependences.
+        # For each found package including the current directory package generate the build package files.
+        # Compile and execute the binary.
         echo
         echo "Not implemented yet"
         echo
     ;;
 
     "install" )
+        # Walk all "*.c" files but exclude "_test.c" files in the current directory to find all package dependences.
+        # For each found package including the current directory package generate the build package files.
+        # Compile and execute the binary.
         echo
         echo "Not implemented yet"
         echo
