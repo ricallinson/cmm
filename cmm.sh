@@ -8,7 +8,7 @@ cmm_find_up() {
   echo "$path"
 }
 
-# Find the first `src` directory above the given directory.
+# Find the first parent `src` directory starting at the given directory.
 cmm_find_src() {
   local dir
   dir="$(cmm_find_up $1 'src')"
@@ -84,18 +84,12 @@ cmm() {
     ;;
 
     "test" )
-        # Walk all "_test.c" files in the current directory to find all package dependences.
-        # For each found package including the current directory package generate the build package files.
-        # Compile and execute the binary.
         echo
         echo "Not implemented yet"
         echo
     ;;
 
     "install" )
-        # Walk all "*.c" files but exclude "_test.c" files in the current directory to find all package dependences.
-        # For each found package including the current directory package generate the build package files.
-        # Compile and execute the binary.
         echo
         echo "Not implemented yet"
         echo

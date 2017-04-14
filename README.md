@@ -1,10 +1,10 @@
 # C Minus Minus
 
-An experiment in coding C differently.
+An experiment in coding C like it was Go.
+
+__VERY UNSTABLE__
 
 ## Thoughts
-
-Steal all the good things from Go.
 
 * A workspace is a directory with `src`, `pkg` and `bin` sub directories.
 * A package directory path under the `src` sub directory is a URI to a git repository.
@@ -54,7 +54,7 @@ Execute all `_test.c` files in the current directory and all sub directories rec
 
 	cmm test ...
 
-Execute the test files in the current directory and output line coverage in gcov format;
+Execute the test files in the current directory and output line coverage in `gcov` format;
 
 	cmm test -cover
 
