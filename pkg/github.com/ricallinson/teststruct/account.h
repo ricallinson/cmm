@@ -8,6 +8,6 @@ typedef struct {
     char *lastname;
 } Account;
 Account AccountCreate(char *firstname, char *lastname);
-void AccountToString(Account *account, char *s);
+int AccountFree();
 char *AccountToChars(Account *account);
 #endif

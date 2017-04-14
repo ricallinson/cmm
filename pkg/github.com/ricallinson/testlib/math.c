@@ -13,7 +13,6 @@ int MathIncrement(int x) {
     return x + getCurrent();
 }
 
-// Public function.
 int MathNext() {
     return MathIncrement(0);
 }

@@ -6,10 +6,12 @@ rm -rf $CMMROOT/_gcov
 mkdir $CMMROOT/_gcov
 cd $CMMROOT/_gcov
 
-gcc -Wall -fprofile-arcs -ftest-coverage -I $CMMROOT/src -o $CMMROOT/_gcov/hello \
-    $CMMROOT/src/github.com/ricallinson/testhello/hello.c \
-    $CMMROOT/src/github.com/ricallinson/testlib/math.c \
-    $CMMROOT/src/github.com/ricallinson/teststruct/account.c
+# Copy all *.c files into the "pkg" directory and generate the *.h files.
+
+gcc -Wall -fprofile-arcs -ftest-coverage -I $CMMROOT/pkg -o $CMMROOT/_gcov/hello \
+    $CMMROOT/pkg/github.com/ricallinson/testhello/hello.c \
+    $CMMROOT/pkg/github.com/ricallinson/testlib/math.c \
+    $CMMROOT/pkg/github.com/ricallinson/teststruct/account.c
 
 ./hello
 
