@@ -15,5 +15,5 @@ int _Increment(int x) {
 
 // Public function.
 int _Next() {
-    return MathIncrement(0);
+    return _Increment(0);
 }

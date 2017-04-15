@@ -6,4 +6,5 @@
 # Folders
 *.DS_Store
 bin
+pkg
 _gcov
