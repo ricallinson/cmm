@@ -12,9 +12,8 @@ __VERY UNSTABLE__
 * A package directory contains `*.c` files (no `*.h` files).
 * Header files are generated automatically from publicly declared functions and variables.
 * Public functions or variables must start with the packages directory name and a capital letter.
-* An `_` can be used to start a function or variable name and will be replaced with the packages directory name, starting with a capital letter.
-* A publicly declared `struct` must have `_MallocStructName()` and `_FreeStructName()` functions which should manage all memory for that `struct`.
-* If a publicly declared `struct` does not have `_MallocStructName()` or `_FreeStructName()` functions an __attempt__ will be made to create them.
+* A publicly declared `struct` must have public `MallocStructName()` and `FreeStructName()` functions which should manage all memory for that `struct`.
+* If a publicly declared `struct` does not have `MallocStructName()` or `FreeStructName()` functions an __attempt__ will be made to create them.
 * The `src` directory must contain __all__ code required to compile the binary (no linked binaries are allowed).
 * The `pkg` directory contains all generated code made from the `src` directory.
 * The `bin` directory contains compiled binaries installed via this workspace.

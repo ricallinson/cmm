@@ -103,19 +103,6 @@ func findPackageName(file string) []byte {
 	return []byte(strings.Title(pkgName))
 }
 
-// Replace '_' for functions starting '_' with the packages parent directory name but starting with an uppercase char.
-func insertPackageNameIntoFunctionName(pkgName []byte, b []byte) []byte {
-	// Find all functions that start with an underscore.
-	re := regexp.MustCompile("_[A-Za-z0-9_]*([.]*)")
-	funcs := re.FindAll(b, -1)
-	// Each found function has the '_' replaced with the package name.
-	for _, fn := range funcs {
-		funcName := bytes.Replace(fn, []byte("_"), pkgName, 1)
-		b = bytes.Replace(b, fn, funcName, 1)
-	}
-	return b
-}
-
 func generatePackageFiles(files []string) {
 	for _, file := range files {
 		generatePackageFile(file)
@@ -130,7 +117,6 @@ func generatePackageFile(srcFile string) {
 	}
 	pkgName := findPackageName(srcFile)
 	b = findMissingStuctFunctions(b)
-	b = insertPackageNameIntoFunctionName(pkgName, b)
 	// Save the generated file into the 'pkg' directory.
 	pkgFile := strings.Replace(srcFile, srcDir, pkgDir, 1)
 	if err := os.MkdirAll(path.Dir(pkgFile), 0777); err != nil {
