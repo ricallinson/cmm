@@ -36,6 +36,7 @@ cmm() {
         echo
         echo "CMMPATH=$CMMPATH"
         echo "GCC=$(which gcc)"
+        echo "CMMB=$(which cmmb)"
         echo
     ;;
 
@@ -87,9 +88,7 @@ cmm() {
     ;;
 
     "install" )
-        echo
-        echo "Not implemented yet"
-        echo
+        cmmb install "${@:2}"
     ;;
 
     "test" )
