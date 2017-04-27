@@ -35,6 +35,7 @@ cmm() {
     "env" )
         echo
         echo "CMMPATH=$CMMPATH"
+        echo "GCC=$(which gcc)"
         echo
     ;;
 
