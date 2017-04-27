@@ -29,6 +29,7 @@ cmm() {
     "clean" )
         rm -rf $CMMPATH/bin/*
         rm -rf $CMMPATH/pkg/*
+        rm -rf $CMMPATH/_gcov
     ;;
 
     "env" )

@@ -2,8 +2,8 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "github.com/ricallinson/testhello/hello.h"
+#include "github.com/ricallinson/hello/main.h"
 
-int main() {
-    
+int Test() {
+    return 0;
 }

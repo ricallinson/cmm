@@ -2,16 +2,16 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "github.com/ricallinson/math/main.h"
+#include "github.com/ricallinson/math/math.h"
 
 typedef struct {
     int id;
     char *firstname;
     char *lastname;
-} _Account;
+} AccountsAccount;
 
-Account _AccountMalloc(char *firstname, char *lastname) {
-    _Account a = {
+AccountsAccount AccountsMallocAccount(char *firstname, char *lastname) {
+    AccountsAccount a = {
         .id = MathNext(),
         .firstname = firstname,
         .lastname = lastname
@@ -19,13 +19,13 @@ Account _AccountMalloc(char *firstname, char *lastname) {
     return a;
 }
 
-int _AccountFree(_Account *account) {
+int AccountsFreeAccount(AccountsAccount *account) {
     // Free all memory used.
     return 0;
 }
 
 // Returns a pointer that needs freeing after use.
-char *_AccountToChars(_Account *account) {
+char *AccountsToChars(AccountsAccount *account) {
     char *s = malloc(30); // Get length of memory required for string.
     sprintf(s, "%d: %s %s", account->id, account->firstname, account->lastname);
     return s;

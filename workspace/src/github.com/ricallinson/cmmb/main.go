@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"os/exec"
 	"io/ioutil"
 	"strings"
 	"path"
@@ -16,14 +17,16 @@ var (
 	// Match all chars that are not letters or numbers.
 	regexpCharsOnly = regexp.MustCompile("[^A-Za-z0-9_]")
 	regexpStruct = regexp.MustCompile("typedef(.*)\\{([^}]*?)\\}([^;]*);")
-	regexpFunction = regexp.MustCompile("[A-Za-z0-9_]* [A-Za-z0-9_]*\\(.*\\) ?{")
+	regexpFunction = regexp.MustCompile("[A-Za-z0-9_]* [*A-Za-z0-9_]*\\(.*\\) ?{")
 )
 
 // Cmm directories.
 var (
-	srcDir = os.Getenv("CMMPATH") + string(filepath.Separator) + "src" + string(filepath.Separator)
-	pkgDir = os.Getenv("CMMPATH") + string(filepath.Separator) + "pkg" + string(filepath.Separator)
-	binDir = os.Getenv("CMMPATH") + string(filepath.Separator) + "bin" + string(filepath.Separator)
+	cmmDir = os.Getenv("CMMPATH") + string(filepath.Separator)
+	srcDir = cmmDir + "src" + string(filepath.Separator)
+	pkgDir = cmmDir + "pkg" + string(filepath.Separator)
+	binDir = cmmDir + "bin" + string(filepath.Separator)
+	covDir = cmmDir + "_gcov" + string(filepath.Separator)
 )
 
 func inArray(array []string, match string) bool {
@@ -79,7 +82,7 @@ func findFileDeps(file string, deps map[string]bool) {
 			// Recursively this packages dependencies if we don't already have it.
 			if _, got := deps[pkg]; !got {
 				deps[pkg] = true
-				findPackageDeps(pkg, false, deps)
+				//findPackageDeps(pkg, false, deps)
 			}
 		}
 	}
@@ -201,8 +204,41 @@ func generatePackageHeaderFile(srcFile string) {
 	// fmt.Println(string(header))
 }
 
-func testCompile(name string, files []string) {
+func executeCommand(command string, args []string) {
+	// fmt.Println(command, args)
+	cmd := exec.Command(command, args...)
+	cmd.Stdin = strings.NewReader("some input")
+	var out bytes.Buffer
+	var err bytes.Buffer
+	cmd.Stdout = &out
+	cmd.Stderr = &err
+	e := cmd.Run()
+	fmt.Printf(err.String())
+	fmt.Printf(out.String())
+	if e != nil {
+		fmt.Println(e)
+	}
+}
 
+func testCompile(pkg string, files []string) {
+	if err := os.MkdirAll(cmmDir + "_gcov", 0777); err != nil {
+		panic(err)
+	}
+	args := strings.Split("-Wall -fprofile-arcs -ftest-coverage -I " + pkgDir + " -o " + covDir + pkg, " ")
+	for _, srcFile := range files {
+		pkgFile := strings.Replace(srcFile, srcDir, pkgDir, 1)
+		args = append(args, pkgFile)
+	}
+	cwd, _ := os.Getwd()
+	os.Chdir(covDir)
+	executeCommand("gcc", args)
+	executeCommand(covDir + pkg, []string{})
+	covFiles := []string{}
+	for _, cFile := range files {
+		covFiles = append(covFiles, covDir + path.Base(cFile))
+	}
+	executeCommand("gcov", covFiles)
+	os.Chdir(cwd)
 }
 
 func installCompile(name string, files []string) {
@@ -217,7 +253,7 @@ func executeTest(path string) {
 // For each found package including the current directory package generate the build package files.
 // Compile and execute the binary collecting gcov output.
 func test(dir string) {
-	name := "" + "_test"
+	name := path.Base(dir) + "_test"
 	files := findPackageFiles(dir, true)
 	deps := map[string]bool{}
 	for _, file := range files {
