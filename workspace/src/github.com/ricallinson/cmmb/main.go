@@ -204,7 +204,7 @@ func generatePackageHeaderFile(srcFile string) {
 	// fmt.Println(string(header))
 }
 
-func executeCommand(command string, args []string) {
+func executeCommand(output bool, command string, args []string) bool {
 	// fmt.Println(command, args)
 	cmd := exec.Command(command, args...)
 	cmd.Stdin = strings.NewReader("some input")
@@ -213,31 +213,35 @@ func executeCommand(command string, args []string) {
 	cmd.Stdout = &out
 	cmd.Stderr = &err
 	e := cmd.Run()
-	fmt.Printf(err.String())
-	fmt.Printf(out.String())
-	if e != nil {
-		fmt.Println(e)
+	if output {
+		fmt.Printf(out.String())
 	}
+	if e != nil {
+		fmt.Printf(err.String())
+		fmt.Println(e)
+		return false
+	}
+	return true
 }
 
 func testCompile(pkg string, files []string) {
 	if err := os.MkdirAll(cmmDir + "_gcov", 0777); err != nil {
 		panic(err)
 	}
-	args := strings.Split("-Wall -fprofile-arcs -ftest-coverage -I " + pkgDir + " -o " + covDir + pkg, " ")
+	gccArgs := strings.Split("-Wall -fprofile-arcs -ftest-coverage -I " + pkgDir + " -o " + covDir + pkg, " ")
 	for _, srcFile := range files {
 		pkgFile := strings.Replace(srcFile, srcDir, pkgDir, 1)
-		args = append(args, pkgFile)
+		gccArgs = append(gccArgs, pkgFile)
 	}
 	cwd, _ := os.Getwd()
 	os.Chdir(covDir)
-	executeCommand("gcc", args)
-	executeCommand(covDir + pkg, []string{})
-	covFiles := []string{}
+	executeCommand(true, "gcc", gccArgs)
+	executeCommand(true, covDir + pkg, []string{})
+	gcovArgs := strings.Split("--all-blocks --branch-probabilities --branch-counts", " ")
 	for _, cFile := range files {
-		covFiles = append(covFiles, covDir + path.Base(cFile))
+		gcovArgs = append(gcovArgs, covDir + path.Base(cFile))
 	}
-	executeCommand("gcov", covFiles)
+	executeCommand(false, "gcov", gcovArgs)
 	os.Chdir(cwd)
 }
 
