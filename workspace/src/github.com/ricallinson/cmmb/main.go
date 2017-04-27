@@ -224,7 +224,7 @@ func executeCommand(output bool, command string, args []string) bool {
 	return true
 }
 
-func testCompile(pkg string, files []string) {
+func executeTest(pkg string, files []string) {
 	if err := os.MkdirAll(cmmDir+"_gcov", 0777); err != nil {
 		panic(err)
 	}
@@ -245,12 +245,13 @@ func testCompile(pkg string, files []string) {
 	os.Chdir(cwd)
 }
 
-func installCompile(name string, files []string) {
-
-}
-
-func executeTest(path string) {
-
+func installCompile(pkg string, files []string) {
+	gccArgs := strings.Split("-I "+pkgDir+" -o "+binDir+pkg, " ")
+	for _, srcFile := range files {
+		pkgFile := strings.Replace(srcFile, srcDir, pkgDir, 1)
+		gccArgs = append(gccArgs, pkgFile)
+	}
+	executeCommand(true, "gcc", gccArgs)
 }
 
 // Walk all "_test.c" files in the current directory to find all package dependences.
@@ -269,15 +270,26 @@ func test(dir string) {
 	files = dedup(files)
 	generatePackageFiles(files)
 	generatePackageHeaderFiles(files)
-	testCompile(name, files)
-	executeTest(name)
+	executeTest(name, files)
 }
 
 // Walk all "*.c" files but exclude "_test.c" files in the current directory to find all package dependences.
 // For each found package including the current directory package generate the build package files.
 // Compile the binary.
 func install(dir string) {
-
+	name := path.Base(dir)
+	files := findPackageFiles(dir, false)
+	deps := map[string]bool{}
+	for _, file := range files {
+		findFileDeps(file, deps)
+	}
+	for dep, _ := range deps {
+		files = append(files, findPackageFiles(srcDir+dep, false)...)
+	}
+	files = dedup(files)
+	generatePackageFiles(files)
+	generatePackageHeaderFiles(files)
+	installCompile(name, files)
 }
 
 func main() {
