@@ -93,9 +93,7 @@ cmm() {
     ;;
 
     "test" )
-        echo
-        echo "Not implemented yet"
-        echo
+        cmmb test "${@:2}"
     ;;
 
     "version" )
@@ -104,5 +102,12 @@ cmm() {
         echo
     ;;
 
+    *)
+        echo "cmm: unknown subcommand \"$1\""
+        echo "Run 'cmm help' for usage."
+        return 1
+
     esac
+
+    return $?
 }
