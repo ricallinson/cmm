@@ -25,12 +25,31 @@ cmm_resolve() {
 
 cmm() {
     case $1 in
+
+    "clean" )
+        rm -rf $CMMPATH/bin/*
+        rm -rf $CMMPATH/pkg/*
+    ;;
+
+    "env" )
+        echo
+        echo "CMMPATH=$CMMPATH"
+        echo
+    ;;
+
+    "get" )
+        echo
+        echo "Not implemented yet"
+        echo
+    ;;
+
     "help" )
         echo
         echo "C Minus Minus"
         echo
         echo "Usage:"
         echo
+        echo "    cmm clean                   remove object files"
         echo "    cmm env                     print C Minus Minus environment information"
         echo "    cmm get                     download and install packages and dependencies"
         echo "    cmm help                    show this message"
@@ -65,19 +84,7 @@ cmm() {
         echo
     ;;
 
-    "version" )
-        echo
-        echo "C Minus Minus v0.0.1"
-        echo
-    ;;
-
-    "env" )
-        echo
-        echo "CMMPATH=$CMMPATH"
-        echo
-    ;;
-
-    "get" )
+    "install" )
         echo
         echo "Not implemented yet"
         echo
@@ -89,9 +96,9 @@ cmm() {
         echo
     ;;
 
-    "install" )
+    "version" )
         echo
-        echo "Not implemented yet"
+        echo "C Minus Minus v0.0.1"
         echo
     ;;
 

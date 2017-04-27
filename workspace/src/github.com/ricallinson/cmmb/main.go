@@ -115,7 +115,6 @@ func generatePackageFile(srcFile string) {
 	if err1 != nil {
 		panic(err1)
 	}
-	pkgName := findPackageName(srcFile)
 	b = findMissingStuctFunctions(b)
 	// Save the generated file into the 'pkg' directory.
 	pkgFile := strings.Replace(srcFile, srcDir, pkgDir, 1)
@@ -125,7 +124,7 @@ func generatePackageFile(srcFile string) {
 	if err := ioutil.WriteFile(pkgFile, b, 0777); err != nil {
 		panic(err)
 	}
-	// fmt.Println(string(pkgName), pkgFile)
+	// fmt.Println(string(findPackageName(srcFile)), pkgFile)
 }
 
 func generatePackageHeaderFiles(files []string) {
