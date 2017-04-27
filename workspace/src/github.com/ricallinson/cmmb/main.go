@@ -254,8 +254,8 @@ func installCompile(pkg string, files []string) {
 	executeCommand(true, "gcc", gccArgs)
 }
 
-func generatePacakgeFiles(name string, dir string) []string {
-	files := findPackageFiles(dir, true)
+func generatePacakgeFiles(name string, dir string, test bool) []string {
+	files := findPackageFiles(dir, test)
 	deps := map[string]bool{}
 	for _, file := range files {
 		findFileDeps(file, deps)
@@ -274,7 +274,7 @@ func generatePacakgeFiles(name string, dir string) []string {
 // Compile and execute the binary collecting gcov output.
 func test(dir string) {
 	name := path.Base(dir) + "_test"
-	files := generatePacakgeFiles(name, dir)
+	files := generatePacakgeFiles(name, dir, true)
 	executeTest(name, files)
 }
 
@@ -283,7 +283,7 @@ func test(dir string) {
 // Compile the binary.
 func install(dir string) {
 	name := path.Base(dir)
-	files := generatePacakgeFiles(name, dir)
+	files := generatePacakgeFiles(name, dir, false)
 	installCompile(name, files)
 }
 
