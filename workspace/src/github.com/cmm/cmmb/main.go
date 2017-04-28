@@ -201,11 +201,11 @@ func installCompile(pkg string, files []string) {
 
 func generatePacakgeFiles(filePath string) []string {
 	deps := map[string]bool{} 
+	deps[filePath] = true
 	findFileDeps(filePath, deps)
 	files := []string{}
 	for dep := range deps {
 		files = append(files, dep)
-		// fmt.Println(dep)
 	}
 	generatePackageFiles(files)
 	generatePackageHeaderFiles(files)
