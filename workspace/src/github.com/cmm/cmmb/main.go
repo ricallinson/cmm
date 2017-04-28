@@ -29,43 +29,8 @@ var (
 	covDir = cmmDir + "_gcov" + string(filepath.Separator)
 )
 
-func inArray(array []string, match string) bool {
-	for _, item := range array {
-		if item == match {
-			return true
-		}
-	}
-	return false
-}
-
-func dedup(src []string) []string {
-	dest := []string{}
-	for _, item := range src {
-		if !inArray(dest, item) {
-			dest = append(dest, item)
-		}
-	}
-	return dest
-}
-
-func findPackageFiles(dir string, test bool) []string {
-	pkgFiles := []string{}
-	files, _ := ioutil.ReadDir(dir)
-	for _, file := range files {
-		if strings.HasSuffix(file.Name(), ".c") {
-			if !test && !strings.HasSuffix(file.Name(), "_test.c") {
-				pkgFiles = append(pkgFiles, dir+string(filepath.Separator)+file.Name())
-			} else {
-				pkgFiles = append(pkgFiles, dir+string(filepath.Separator)+file.Name())
-			}
-		}
-	}
-	return pkgFiles
-}
-
-// Recursively finds all package dependences for the given file.
+// Recursively finds all dependences for the given file.
 func findFileDeps(file string, deps map[string]bool) {
-	// Find dependencies for the given file.
 	b, err := ioutil.ReadFile(file)
 	if err != nil {
 		panic(err)
@@ -77,22 +42,12 @@ func findFileDeps(file string, deps map[string]bool) {
 			if len(parts) < 3 {
 				continue
 			}
-			// Get the package from the included header file.
-			pkg := string(parts[1][:bytes.LastIndexByte(parts[1], '/')])
-			// Recursively this packages dependencies if we don't already have it.
-			if _, got := deps[pkg]; !got {
-				deps[pkg] = true
-				//findPackageDeps(pkg, false, deps)
+			includeFile := string(parts[1])
+			if _, got := deps[includeFile]; !got {
+				deps[includeFile] = true
+				findFileDeps(includeFile, deps)
 			}
 		}
-	}
-}
-
-// For each file in a package recursively find its dependencies.
-func findPackageDeps(dir string, test bool, deps map[string]bool) {
-	files := findPackageFiles(dir, test)
-	for _, file := range files {
-		findFileDeps(file, deps)
 	}
 }
 
@@ -255,15 +210,17 @@ func installCompile(pkg string, files []string) {
 }
 
 func generatePacakgeFiles(name string, dir string, test bool) []string {
-	files := findPackageFiles(dir, test)
-	deps := map[string]bool{}
-	for _, file := range files {
-		findFileDeps(file, deps)
+	mainFile := "main.c"
+	if test {
+		mainFile = "main_test.c"
 	}
-	for dep, _ := range deps {
-		files = append(files, findPackageFiles(srcDir+dep, false)...)
+	mainPath := path.Join(dir, mainFile)
+	deps := map[string]bool{} 
+	findFileDeps(mainPath, deps)
+	files := []string{mainPath}
+	for dep := range deps {
+		files = append(files, dep)
 	}
-	files = dedup(files)
 	generatePackageFiles(files)
 	generatePackageHeaderFiles(files)
 	return files
@@ -295,7 +252,7 @@ func main() {
 	}
 	dir, _ := os.Getwd()
 	if len(args) == 2 {
-		dir = srcDir + args[1]
+		dir = path.Join(srcDir, args[1])
 	}
 	switch args[0] {
 	case "test":
