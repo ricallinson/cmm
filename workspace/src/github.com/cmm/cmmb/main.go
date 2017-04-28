@@ -42,23 +42,14 @@ func findFileDeps(file string, deps map[string]bool) {
 			if len(parts) < 3 {
 				continue
 			}
-			includeFile := string(parts[1])
+			includeFile := path.Join(srcDir, string(parts[1]))
+			includeFile = strings.Replace(includeFile, ".h", ".c", 1)
 			if _, got := deps[includeFile]; !got {
 				deps[includeFile] = true
 				findFileDeps(includeFile, deps)
 			}
 		}
 	}
-}
-
-// Check for public 'struct' definitions that don't have a '_StructNameMalloc' or '_StructNameFree' function.
-func findMissingStuctFunctions(b []byte) []byte {
-	return b
-}
-
-func findPackageName(file string) []byte {
-	pkgName := path.Base(path.Dir(file))
-	return []byte(strings.Title(pkgName))
 }
 
 func generatePackageFiles(files []string) {
@@ -73,7 +64,6 @@ func generatePackageFile(srcFile string) {
 	if err1 != nil {
 		panic(err1)
 	}
-	b = findMissingStuctFunctions(b)
 	// Save the generated file into the 'pkg' directory.
 	pkgFile := strings.Replace(srcFile, srcDir, pkgDir, 1)
 	if err := os.MkdirAll(path.Dir(pkgFile), 0777); err != nil {
@@ -82,7 +72,7 @@ func generatePackageFile(srcFile string) {
 	if err := ioutil.WriteFile(pkgFile, b, 0777); err != nil {
 		panic(err)
 	}
-	// fmt.Println(string(findPackageName(srcFile)), pkgFile)
+	// fmt.Println(path.Base(srcFile)), pkgFile)
 }
 
 func generatePackageHeaderFiles(files []string) {
@@ -209,17 +199,13 @@ func installCompile(pkg string, files []string) {
 	executeCommand(true, "gcc", gccArgs)
 }
 
-func generatePacakgeFiles(name string, dir string, test bool) []string {
-	mainFile := "main.c"
-	if test {
-		mainFile = "main_test.c"
-	}
-	mainPath := path.Join(dir, mainFile)
+func generatePacakgeFiles(filePath string) []string {
 	deps := map[string]bool{} 
-	findFileDeps(mainPath, deps)
-	files := []string{mainPath}
+	findFileDeps(filePath, deps)
+	files := []string{}
 	for dep := range deps {
 		files = append(files, dep)
+		// fmt.Println(dep)
 	}
 	generatePackageFiles(files)
 	generatePackageHeaderFiles(files)
@@ -231,7 +217,7 @@ func generatePacakgeFiles(name string, dir string, test bool) []string {
 // Compile and execute the binary collecting gcov output.
 func test(dir string) {
 	name := path.Base(dir) + "_test"
-	files := generatePacakgeFiles(name, dir, true)
+	files := generatePacakgeFiles(path.Join(dir, "main_test.c"))
 	executeTest(name, files)
 }
 
@@ -240,7 +226,7 @@ func test(dir string) {
 // Compile the binary.
 func install(dir string) {
 	name := path.Base(dir)
-	files := generatePacakgeFiles(name, dir, false)
+	files := generatePacakgeFiles(path.Join(dir, "main.c"))
 	installCompile(name, files)
 }
 
