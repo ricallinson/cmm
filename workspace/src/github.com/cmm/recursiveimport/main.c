@@ -1,9 +1,17 @@
+#include <stdio.h>
+#include "github.com/cmm/import/import.h"
 #include "github.com/cmm/recursiveimport/other.h"
 
 int main() {
-    private();
+	ImportPrint();
+    OtherPublicPrint();
+    return 0;
 }
 
-void print() {
-    printf("%s\n", "recursive import");
+void privatePrint() {
+	printf("%s\n", "recursive import");
+}
+
+void PublicPrint() {
+    privatePrint();
 }
