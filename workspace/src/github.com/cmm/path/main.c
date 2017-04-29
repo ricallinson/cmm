@@ -17,17 +17,17 @@ char *PathBase(char *path) {
 	if (strcmp(path, "") == 0) {
 		return ".";
 	}
-	// Copy the path into a new array.
-	char* res = subset(path, 0, strlen(path));
+	// Copy the path into a new array so it can be changed without side effects.
+	char *res = subset(path, 0, strlen(path));
 	// Strip trailing slashes.
 	while (strlen(res) > 0 && res[strlen(res)-1] == '/') {
-		// Create a new array with the shortend path.
+		// Create a new array with the shortened path.
 		char* tmp = subset(res, 0, strlen(res)-1);
-		// Free the tmp value memory now we have the new array tmp.
+		// Free the old result value memory now we have the new array tmp.
 		free(res);
 		// Copy tmp into the return value pointer.
 		res = subset(tmp, 0, strlen(tmp));
-		// Now free the tmp value.
+		// Now free the tmp value memory as we don't need it anymore.
 		free(tmp);
 	}
 	// Find the last element
