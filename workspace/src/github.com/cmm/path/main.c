@@ -73,16 +73,14 @@ char *PathClean(char *path) {
 	}
 
 	int rooted = 0;
-	if (path[0] == '/') {
-		rooted = 1;
-	}
 	int n = strlen(path);
+	int i = 0; // Index in buffer.
+	int r = 0; // Index in given path.
+	int dotdot = 0; // Index of "..".
 	char *buf = malloc(n);
-	int i = 0;
-	int r = 0;
-	int dotdot = 0;
 
-	if (rooted == 1) {
+	if (path[r] == '/') {
+		rooted = 1;
 		buf[i] = '/';
 		i++;
 		r++;
@@ -90,6 +88,8 @@ char *PathClean(char *path) {
 	}
 
 	while (r < n) {
+		// printf("> %d %d\n", r, n);
+		// printf("> %s\n", buf);
 		if (path[r] == '/') {
 			// Empty path element.
 			r++;
@@ -97,15 +97,48 @@ char *PathClean(char *path) {
 			// . element.
 			r++;
 		} else if (path[r] == '.' && path[r+1] == '.' && (r+2 == n || path[r+2] == '/')) {
-
+			// .. element: remove to last /.
+			r = r + 2;
+			if (i > dotdot) {
+				// Can backtrack.
+				i--;
+				while (i > dotdot && buf[i] != '/') {
+					i--;
+				}
+			} else if (rooted == 0) {
+				// Cannot backtrack, but not rooted, so append .. element.
+				if (i > 0) {
+					buf[i] = '/';
+					i++;
+				}
+				buf[i] = '.';
+				i++;
+				buf[i] = '.';
+				i++;
+				dotdot = i;
+			}
 		} else {
-
+			// Real path element.
+			// Add slash if needed.
+			if ((rooted == 1 && i != 1) || (rooted == 0 && i != 0)) {
+				buf[i] = '/';
+				i++;
+			}
+			// Copy element.
+			while (r < n && path[r] != '/') {
+				buf[i] = path[r];
+				i++;
+				r++;
+			}
 		}
 	}
+
+	// Turn empty buffer into ".".
 	if (i == 0) {
 		buf[i] = '.';
 		i++;
 	}
+
 	char *cleaned = StringsSubstring(buf, 0, i);
 	free(buf);
 	printf("%s\n", cleaned);

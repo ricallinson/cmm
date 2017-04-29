@@ -58,6 +58,12 @@ void TestPathCleanRelative() {
 	free(path);
 }
 
+void TestPathCleanBacktrack() {
+	char *path = PathClean("/foo/bar/../baz");
+	assert(strcmp(path, "/foo/baz") == 0);
+	free(path);
+}
+
 int main() {
 	// Base.
 	TestPathBaseEmpty();
@@ -70,5 +76,6 @@ int main() {
 	TestPathCleanRoot();
 	TestPathCleanBadRoot();
 	TestPathCleanRelative();
+	TestPathCleanBacktrack();
 	return 0;
 }
