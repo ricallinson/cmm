@@ -1,17 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-char *copySubset(char *array, int from, int to) {
-	int arraySize = strlen(array);
-	int n = 0;
-	char *res = malloc((to-from)*sizeof(char));
-	for(int i = from; i < to; i++) {
-		res[n] = array[i];
-		n++;
-	}
-	return res;
-}
+#include "github.com/cmm/strings/main.h"
 
 // Base returns the last element of path. Trailing slashes are removed before extracting the last element. 
 // If the path is empty, Base returns ".". If the path consists entirely of slashes, Base returns "/".
@@ -24,22 +14,22 @@ char *PathBase(char *path) {
 		return res;
 	}
 	// Copy the path into a new array so it can be changed without side effects.
-	char *res = copySubset(path, 0, strlen(path));
+	char *res = StringsSubstring(path, 0, strlen(path));
 	// Strip trailing slashes.
 	while (strlen(res) > 0 && res[strlen(res)-1] == '/') {
 		// Create a new array with the shortened path.
-		char* tmp = copySubset(res, 0, strlen(res)-1);
+		char* tmp = StringsSubstring(res, 0, strlen(res)-1);
 		// Free the old result value memory now we have the new array tmp.
 		free(res);
 		// Copy tmp into the return value pointer.
-		res = copySubset(tmp, 0, strlen(tmp));
+		res = StringsSubstring(tmp, 0, strlen(tmp));
 		// Now free the tmp value memory as we don't need it anymore.
 		free(tmp);
 	}
 	// Find the last element
 	for (int i = strlen(res); i > 0; i--) {
 		if (res[i] == '/') {
-			res = copySubset(res, 0, i);
+			res = StringsSubstring(res, 0, i);
 			break;
 		}
 	}
@@ -81,7 +71,7 @@ char *PathClean(char *path) {
 		res[1] = 0;
 		return res;
 	}
-	int rooted = path[0] == '/';
+	// int rooted = path[0] == '/';
 	return "";
 }
 
