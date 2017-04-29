@@ -12,13 +12,13 @@ void TestPathBaseEmpty() {
 
 void TestPathBaseRootPath() {
 	char *path = PathBase("/foo/bar/baz");
-	assert(strcmp(path, "/foo/bar") == 0);
+	assert(strcmp(path, "baz") == 0);
 	free(path);
 }
 
 void TestPathBaseRelativePath() {
 	char *path = PathBase("./bar/baz");
-	assert(strcmp(path, "./bar") == 0);
+	assert(strcmp(path, "baz") == 0);
 	free(path);
 }
 
@@ -30,7 +30,13 @@ void TestPathBaseRoot() {
 
 void TestPathBaseRootPathBroken() {
 	char *path = PathBase("/foo//bar//baz");
-	assert(strcmp(path, "/foo//bar/") == 0);
+	assert(strcmp(path, "baz") == 0);
+	free(path);
+}
+
+void TestPathBaseRootPathFile() {
+	char *path = PathBase("/foo/bar/baz.txt");
+	assert(strcmp(path, "baz.txt") == 0);
 	free(path);
 }
 
@@ -76,6 +82,42 @@ void TestPathCleanBacktrackRelative() {
 	free(path);
 }
 
+void TestPathDirEmpty() {
+	char *path = PathDir("");
+	assert(strcmp(path, ".") == 0);
+	free(path);
+}
+
+void TestPathDirRootPath() {
+	char *path = PathDir("/foo/bar/baz");
+	assert(strcmp(path, "/foo/bar") == 0);
+	free(path);
+}
+
+void TestPathDirRelativePath() {
+	char *path = PathDir("./bar/baz");
+	assert(strcmp(path, "bar") == 0);
+	free(path);
+}
+
+void TestPathDirRoot() {
+	char *path = PathDir("/");
+	assert(strcmp(path, "/") == 0);
+	free(path);
+}
+
+void TestPathDirRootPathBroken() {
+	char *path = PathDir("/foo//bar//baz");
+	assert(strcmp(path, "/foo/bar") == 0);
+	free(path);
+}
+
+void TestPathDirRootPathFile() {
+	char *path = PathDir("/foo/bar/baz.txt");
+	assert(strcmp(path, "/foo/bar") == 0);
+	free(path);
+}
+
 int main() {
 	// Base.
 	TestPathBaseEmpty();
@@ -83,6 +125,7 @@ int main() {
 	TestPathBaseRelativePath();
 	TestPathBaseRoot();
 	TestPathBaseRootPathBroken();
+	TestPathBaseRootPathFile();
 	// Clean.
 	TestPathCleanEmpty();
 	TestPathCleanRoot();
@@ -91,5 +134,12 @@ int main() {
 	TestPathCleanBacktrack();
 	TestPathCleanBacktrackMore();
 	TestPathCleanBacktrackRelative();
+	// Dir.
+	TestPathDirEmpty();
+	TestPathDirRootPath();
+	TestPathDirRelativePath();
+	TestPathDirRoot();
+	TestPathDirRootPathBroken();
+	TestPathDirRootPathFile();
 	return 0;
 }

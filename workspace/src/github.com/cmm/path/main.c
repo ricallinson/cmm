@@ -3,8 +3,10 @@
 #include <string.h>
 #include "github.com/cmm/strings/main.h"
 
-// Base returns the last element of path. Trailing slashes are removed before extracting the last element. 
-// If the path is empty, Base returns ".". If the path consists entirely of slashes, Base returns "/".
+// Base returns the last element of path.
+// Trailing slashes are removed before extracting the last element.
+// If the path is empty, Base returns ".".
+// If the path consists entirely of slashes, Base returns "/".
 char *PathBase(char *path) {
 	// If the path is empty return the relative current directory.
 	if (strcmp(path, "") == 0) {
@@ -13,35 +15,33 @@ char *PathBase(char *path) {
 		res[1] = 0;
 		return res;
 	}
-	// Copy the path into a new array so it can be changed without side effects.
-	char *res = StringsSubstring(path, 0, strlen(path));
-	// Strip trailing slashes.
-	while (strlen(res) > 0 && res[strlen(res)-1] == '/') {
-		// Create a new array with the shortened path.
-		char* tmp = StringsSubstring(res, 0, strlen(res)-1);
-		// Free the old result value memory now we have the new array tmp.
-		free(res);
-		// Copy tmp into the return value pointer.
-		res = StringsSubstring(tmp, 0, strlen(tmp));
-		// Now free the tmp value memory as we don't need it anymore.
-		free(tmp);
-	}
-	// Find the last element
-	for (int i = strlen(res); i > 0; i--) {
-		if (res[i] == '/') {
-			res = StringsSubstring(res, 0, i);
+	int end = strlen(path);
+	// Find the last trailing slashes.
+	while (end > 0) {
+		if (path[end] != '/') {
 			break;
 		}
+		end--;
+	}
+	// Find the last element starting at the last trailing slash.
+	int start = end;
+	while (start > 0) {
+		if (path[start] == '/') {
+			start++;
+			break;
+		}
+		start--;
 	}
 	// If empty now, it had only slashes.
-	if (strcmp(res, "") == 0) {
-		free(res);
+	if (start == end) {
 		char *res = malloc(sizeof(char) * 2);
 		res[0] = '/';
 		res[1] = 0;
 		return res;
 	}
-	return res;
+	// Return the new path string.
+	// printf("%s\n", StringsSubstring(path, start, end));
+	return StringsSubstring(path, start, end);
 }
 
 // Clean returns the shortest path name equivalent to path
@@ -143,8 +143,30 @@ char *PathClean(char *path) {
 	return cleaned;
 }
 
+// Dir returns all but the last element of path, typically the path's directory.
+// After dropping the final element, the path is Cleaned and trailing slashes are removed.
+// If the path is empty, Dir returns ".".
+// If the path consists entirely of slashes followed by non-slash bytes, Dir
+// returns a single slash. In any other case, the returned path does not end in a
+// slash.
 char *PathDir(char *path) {
-	return "";
+	// If the path is empty return the relative current directory.
+	if (strcmp(path, "") == 0) {
+		char *res = malloc(sizeof(char) * 2);
+		res[0] = '.';
+		res[1] = 0;
+		return res;
+	}
+	int end = strlen(path);
+	// Find the last trailing slashes.
+	while (end > 0) {
+		if (path[end] == '/') {
+			break;
+		}
+		end--;
+	}
+	printf("%s\n", PathClean(StringsSubstring(path, 0, end + 1)));
+	return PathClean(StringsSubstring(path, 0, end + 1));
 }
 
 char *PathExt(char *path) {
@@ -152,6 +174,9 @@ char *PathExt(char *path) {
 }
 
 int PathIsAbs(char *path) {
+	if (strlen(path) > 0 && path[0] == '/') {
+		return 1;
+	}
 	return 0;
 }
 
