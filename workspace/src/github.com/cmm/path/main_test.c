@@ -7,7 +7,6 @@
 void TestPathBaseEmpty() {
 	char *path = PathBase("");
 	assert(strcmp(path, ".") == 0);
-	free(*path);
 }
 
 void TestPathBaseRootPath() {
