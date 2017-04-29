@@ -128,6 +128,30 @@ void TestPathIsAbsFalse() {
 	assert(val == 0);
 }
 
+void TestPathExtEmpty() {
+	char *ext = PathExt("");
+	assert(strcmp(ext, "") == 0);
+	free(ext);
+}
+
+void TestPathExtRoot() {
+	char *ext = PathExt("/foo/bar/baz.txt");
+	assert(strcmp(ext, "txt") == 0);
+	free(ext);
+}
+
+void TestPathExtRelative() {
+	char *ext = PathExt("./foo/bar/baz.txt");
+	assert(strcmp(ext, "txt") == 0);
+	free(ext);
+}
+
+void TestPathExtFile() {
+	char *ext = PathExt("baz.txt");
+	assert(strcmp(ext, "txt") == 0);
+	free(ext);
+}
+
 int main() {
 	// Base.
 	TestPathBaseEmpty();
@@ -154,5 +178,10 @@ int main() {
 	// IsAbs.
 	TestPathIsAbsTrue();
 	TestPathIsAbsFalse();
+	// Ext.
+	TestPathExtEmpty();
+	TestPathExtRoot();
+	TestPathExtRelative();
+	TestPathExtFile();
 	return 0;
 }

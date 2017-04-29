@@ -165,12 +165,28 @@ char *PathDir(char *path) {
 		}
 		end--;
 	}
-	// printf("%s\n", PathClean(StringsSubstring(path, 0, end + 1)));
-	return PathClean(StringsSubstring(path, 0, end + 1));
+	char *tmp = StringsSubstring(path, 0, end + 1);
+	char *res = PathClean(tmp);
+	free(tmp);
+	// printf("%s\n", res);
+	return res;
 }
 
+// Ext returns the file name extension used by path.
+// The extension is the suffix beginning at the final dot
+// in the final slash-separated element of path;
+// it is empty if there is no dot.
 char *PathExt(char *path) {
-	return "";
+	int end = strlen(path);
+	// Find the last dot.
+	while (end > 0) {
+		if (path[end] == '.') {
+			break;
+		}
+		end--;
+	}
+	// printf("%s\n", StringsSubstring(path, end + 1, -1));
+	return StringsSubstring(path, end + 1, -1);
 }
 
 int PathIsAbs(char *path) {
