@@ -18,30 +18,30 @@ char *PathBase(char *path) {
 		return ".";
 	}
 	// Copy the path into a new array.
-	char* ret = subset(path, 0, strlen(path));
+	char* res = subset(path, 0, strlen(path));
 	// Strip trailing slashes.
-	while (strlen(ret) > 0 && ret[strlen(ret)-1] == '/') {
+	while (strlen(res) > 0 && res[strlen(res)-1] == '/') {
 		// Create a new array with the shortend path.
-		char* tmp = subset(ret, 0, strlen(ret)-1);
+		char* tmp = subset(res, 0, strlen(res)-1);
 		// Free the tmp value memory now we have the new array tmp.
-		free(ret);
+		free(res);
 		// Copy tmp into the return value pointer.
-		ret = subset(tmp, 0, strlen(tmp));
+		res = subset(tmp, 0, strlen(tmp));
 		// Now free the tmp value.
 		free(tmp);
 	}
 	// Find the last element
-	for (int i = strlen(ret); i > 0; i--) {
-		if (ret[i] == '/') {
-			ret = subset(ret, 0, i);
+	for (int i = strlen(res); i > 0; i--) {
+		if (res[i] == '/') {
+			res = subset(res, 0, i);
 			break;
 		}
 	}
 	// If empty now, it had only slashes.
-	if (strcmp(ret, "") == 0) {
+	if (strcmp(res, "") == 0) {
 		return "/";
 	}
-	return ret;
+	return res;
 }
 
 char *PathClean(char *path) {
