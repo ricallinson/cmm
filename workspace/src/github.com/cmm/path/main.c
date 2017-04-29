@@ -165,7 +165,7 @@ char *PathDir(char *path) {
 		}
 		end--;
 	}
-	printf("%s\n", PathClean(StringsSubstring(path, 0, end + 1)));
+	// printf("%s\n", PathClean(StringsSubstring(path, 0, end + 1)));
 	return PathClean(StringsSubstring(path, 0, end + 1));
 }
 

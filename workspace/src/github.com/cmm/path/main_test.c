@@ -118,6 +118,16 @@ void TestPathDirRootPathFile() {
 	free(path);
 }
 
+void TestPathIsAbsTrue() {
+	int val = PathIsAbs("/foo/bar/baz.txt");
+	assert(val == 1);
+}
+
+void TestPathIsAbsFalse() {
+	int val = PathIsAbs("./foo/bar/baz.txt");
+	assert(val == 0);
+}
+
 int main() {
 	// Base.
 	TestPathBaseEmpty();
@@ -141,5 +151,8 @@ int main() {
 	TestPathDirRoot();
 	TestPathDirRootPathBroken();
 	TestPathDirRootPathFile();
+	// IsAbs.
+	TestPathIsAbsTrue();
+	TestPathIsAbsFalse();
 	return 0;
 }
