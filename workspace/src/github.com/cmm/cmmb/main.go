@@ -206,6 +206,7 @@ func generatePacakgeFiles(filePath string) []string {
 	files := []string{}
 	for dep := range deps {
 		files = append(files, dep)
+		// fmt.Println(dep)
 	}
 	generatePackageFiles(files)
 	generatePackageHeaderFiles(files)
