@@ -40,6 +40,24 @@ void TestPathCleanEmpty() {
 	free(path);
 }
 
+void TestPathCleanRoot() {
+	char *path = PathClean("/");
+	assert(strcmp(path, "/") == 0);
+	free(path);
+}
+
+void TestPathCleanBadRoot() {
+	char *path = PathClean("///");
+	assert(strcmp(path, "/") == 0);
+	free(path);
+}
+
+void TestPathCleanRelative() {
+	char *path = PathClean("./");
+	assert(strcmp(path, ".") == 0);
+	free(path);
+}
+
 int main() {
 	// Base.
 	TestPathBaseEmpty();
@@ -49,5 +67,8 @@ int main() {
 	TestPathBaseRootPathBroken();
 	// Clean.
 	TestPathCleanEmpty();
+	TestPathCleanRoot();
+	TestPathCleanBadRoot();
+	TestPathCleanRelative();
 	return 0;
 }

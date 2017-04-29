@@ -8,7 +8,7 @@
 char *PathBase(char *path) {
 	// If the path is empty return the relative current directory.
 	if (strcmp(path, "") == 0) {
-		char *res = malloc(sizeof(char)*2);
+		char *res = malloc(sizeof(char) * 2);
 		res[0] = '.';
 		res[1] = 0;
 		return res;
@@ -36,7 +36,7 @@ char *PathBase(char *path) {
 	// If empty now, it had only slashes.
 	if (strcmp(res, "") == 0) {
 		free(res);
-		char *res = malloc(sizeof(char)*2);
+		char *res = malloc(sizeof(char) * 2);
 		res[0] = '/';
 		res[1] = 0;
 		return res;
@@ -66,13 +66,50 @@ char *PathBase(char *path) {
 char *PathClean(char *path) {
 	// If the path is empty return the relative current directory.
 	if (strcmp(path, "") == 0) {
-		char *res = malloc(sizeof(char)*2);
+		char *res = malloc(sizeof(char) * 2);
 		res[0] = '.';
 		res[1] = 0;
 		return res;
 	}
-	// int rooted = path[0] == '/';
-	return "";
+
+	int rooted = 0;
+	if (path[0] == '/') {
+		rooted = 1;
+	}
+	int n = strlen(path);
+	char *buf = malloc(n);
+	int i = 0;
+	int r = 0;
+	int dotdot = 0;
+
+	if (rooted == 1) {
+		buf[i] = '/';
+		i++;
+		r++;
+		dotdot++;
+	}
+
+	while (r < n) {
+		if (path[r] == '/') {
+			// Empty path element.
+			r++;
+		} else if (path[r] == '.' && (r+1 == n || path[r+1] == '/')) {
+			// . element.
+			r++;
+		} else if (path[r] == '.' && path[r+1] == '.' && (r+2 == n || path[r+2] == '/')) {
+
+		} else {
+
+		}
+	}
+	if (i == 0) {
+		buf[i] = '.';
+		i++;
+	}
+	char *cleaned = StringsSubstring(buf, 0, i);
+	free(buf);
+	printf("%s\n", cleaned);
+	return cleaned;
 }
 
 char *PathDir(char *path) {

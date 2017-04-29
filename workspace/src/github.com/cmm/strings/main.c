@@ -22,13 +22,13 @@ char *StringsSubstring(char *str, int from, int to) {
 	}
 	int newSize = to - from;
 	int n = 0;
-	char *res = malloc((newSize+1)*sizeof(char));
+	char *res = malloc((newSize + 1) * sizeof(char));
 	for(int i = from; i <= to; i++) {
 		res[n] = str[i];
 		n++;
 	}
 	// Make sure the new string is terminated with a null byte.
 	res[newSize] = 0;
-	printf("%s\n", res);
+	// printf("%s\n", res);
 	return res;
 }
