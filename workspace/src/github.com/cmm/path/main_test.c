@@ -152,6 +152,12 @@ void TestPathExtFile() {
 	free(ext);
 }
 
+void TestPathJoin() {
+	char *path = PathJoin("/foo", "baz.txt");
+	// assert(strcmp(ext, "txt") == 0);
+	// free(path);
+}
+
 int main() {
 	// Base.
 	TestPathBaseEmpty();
@@ -183,5 +189,7 @@ int main() {
 	TestPathExtRoot();
 	TestPathExtRelative();
 	TestPathExtFile();
+	// Path;
+	TestPathJoin();
 	return 0;
 }

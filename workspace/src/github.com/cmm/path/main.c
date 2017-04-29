@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdarg.h>
 #include "github.com/cmm/strings/main.h"
 
 // Base returns the last element of path.
@@ -196,10 +197,6 @@ int PathIsAbs(char *path) {
 	return 0;
 }
 
-char *PathJoin() {
+char *PathJoin(char *a, char *b) {
 	return "";
-}
-
-int PathMatch() {
-	return 0;
 }
