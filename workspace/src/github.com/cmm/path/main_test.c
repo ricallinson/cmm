@@ -1,25 +1,32 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <assert.h>
+#include <string.h>
 #include "github.com/cmm/path/main.h"
 
 void TestPathBaseEmpty() {
-	assert(strcmp(PathBase(""), ".") == 0);
+	char *path = PathBase("");
+	assert(strcmp(path, ".") == 0);
 }
 
 void TestPathBaseRootPath() {
-	assert(strcmp(PathBase("/foo/bar/baz"), "/foo/bar") == 0);
+	char *path = PathBase("/foo/bar/baz");
+	assert(strcmp(path, "/foo/bar") == 0);
 }
 
 void TestPathBaseRelativePath() {
-	assert(strcmp(PathBase("./bar/baz"), "./bar") == 0);
+	char *path = PathBase("./bar/baz");
+	assert(strcmp(path, "./bar") == 0);
 }
 
 void TestPathBaseRoot() {
-	assert(strcmp(PathBase("/"), "/") == 0);
+	char *path = PathBase("/");
+	assert(strcmp(path, "/") == 0);
 }
 
 void TestPathBaseRootPathBroken() {
-	assert(strcmp(PathBase("/foo//bar//baz"), "/foo//bar/") == 0);
+	char *path = PathBase("/foo//bar//baz");
+	assert(strcmp(path, "/foo//bar/") == 0);
 }
 
 int main() {
