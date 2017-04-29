@@ -88,8 +88,6 @@ char *PathClean(char *path) {
 	}
 
 	while (r < n) {
-		// printf("> %d %d\n", r, n);
-		// printf("> %s\n", buf);
 		if (path[r] == '/') {
 			// Empty path element.
 			r++;
@@ -141,7 +139,7 @@ char *PathClean(char *path) {
 
 	char *cleaned = StringsSubstring(buf, 0, i);
 	free(buf);
-	printf("%s\n", cleaned);
+	// printf("%s\n", cleaned);
 	return cleaned;
 }
 
