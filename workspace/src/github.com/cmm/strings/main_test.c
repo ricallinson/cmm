@@ -59,19 +59,19 @@ void TestStringsConcat() {
 }
 
 void TestStringsJoinNone() {
-	char *str = StringsConcat("foo", "bar", "");
+	char *str = StringsJoin("foo", "bar", "");
 	assert(strcmp(str, "foobar") == 0);
 	free(str);
 }
 
 void TestStringsJoinSingle() {
-	char *str = StringsConcat("foo", "bar", " ");
+	char *str = StringsJoin("foo", "bar", " ");
 	assert(strcmp(str, "foo bar") == 0);
 	free(str);
 }
 
 void TestStringsJoinMany() {
-	char *str = StringsConcat("foo", "bar", " : ");
+	char *str = StringsJoin("foo", "bar", " : ");
 	assert(strcmp(str, "foo : bar") == 0);
 	free(str);
 }
@@ -87,8 +87,10 @@ int main() {
 	TestSubstringAllWithoutSize();
 	TestSubstringReturnLast();
 	// Concat.
-	TestStringsConcat()
+	TestStringsConcat();
 	// Join
-	TestStringsJoin();
+	TestStringsJoinNone();
+	TestStringsJoinSingle();
+	TestStringsJoinMany();
 	return 0;
 }
