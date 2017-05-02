@@ -13,7 +13,7 @@ char *PathBase(char *path) {
 	if (strcmp(path, "") == 0) {
 		char *res = malloc(sizeof(char) * 2);
 		res[0] = '.';
-		res[1] = 0;
+		res[1] = '\0';
 		return res;
 	}
 	int end = strlen(path);
@@ -37,7 +37,7 @@ char *PathBase(char *path) {
 	if (start == end) {
 		char *res = malloc(sizeof(char) * 2);
 		res[0] = '/';
-		res[1] = 0;
+		res[1] = '\0';
 		return res;
 	}
 	// Return the new path string.
@@ -69,7 +69,7 @@ char *PathClean(char *path) {
 	if (strcmp(path, "") == 0) {
 		char *res = malloc(sizeof(char) * 2);
 		res[0] = '.';
-		res[1] = 0;
+		res[1] = '\0';
 		return res;
 	}
 
@@ -155,7 +155,7 @@ char *PathDir(char *path) {
 	if (strcmp(path, "") == 0) {
 		char *res = malloc(sizeof(char) * 2);
 		res[0] = '.';
-		res[1] = 0;
+		res[1] = '\0';
 		return res;
 	}
 	int end = strlen(path);
@@ -198,5 +198,8 @@ int PathIsAbs(char *path) {
 }
 
 char *PathJoin(char *a, char *b) {
-	return "";
+	char *path = StringsJoin(a, b, "/");
+	char *cleaned = PathClean(path);
+	free(path);
+	return cleaned;
 }

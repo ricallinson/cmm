@@ -52,6 +52,12 @@ void TestSubstringReturnLast() {
 	free(str);
 }
 
+void TestStringsConcat() {
+	char *str = StringsConcat("foo", "bar");
+	assert(strcmp(str, "foobar") == 0);
+	free(str);
+}
+
 int main() {
 	// Substring.
 	TestSubstringEmpty();

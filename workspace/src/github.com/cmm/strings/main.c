@@ -28,7 +28,29 @@ char *StringsSubstring(char *str, int from, int to) {
 		n++;
 	}
 	// Make sure the new string is terminated with a null byte.
-	res[newSize] = 0;
+	res[newSize] = '\0';
 	// printf("%s\n", res);
+	return res;
+}
+
+//
+char *StringsConcat(char *a, char *b) {
+	int sizeA = strlen(a);
+	int sizeB = strlen(b);
+	char *res = malloc(sizeA + sizeB);
+	for (int i = 0; i < sizeA; i++) {
+		res[i] = a[i];
+	}
+	for (int i = 0; i < sizeB; i++) {
+		res[i + sizeA] = b[i];
+	}
+	res[sizeA + sizeB] = '\0';
+	return res;
+}
+
+char *StringsJoin(char *a, char *b, char *sep) {
+	char *build = StringsConcat(a, sep);
+	char *res = StringsConcat(build, b);
+	free(build);
 	return res;
 }

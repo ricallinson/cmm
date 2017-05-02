@@ -153,9 +153,21 @@ void TestPathExtFile() {
 }
 
 void TestPathJoin() {
-	char *path = PathJoin("/foo", "baz.txt");
-	// assert(strcmp(ext, "txt") == 0);
-	// free(path);
+	char *path = PathJoin("/foo","/baz.txt");
+	assert(strcmp(path, "/foo/baz.txt") == 0);
+	free(path);
+}
+
+void TestPathJoinMany() {
+	char *path = PathJoin("/foo", PathJoin("/bar", "/baz.txt"));
+	assert(strcmp(path, "/foo/bar/baz.txt") == 0);
+	free(path);
+}
+
+void TestPathJoinManyMixed() {
+	char *path = PathJoin("/foo", PathJoin("bar", "baz.txt"));
+	assert(strcmp(path, "/foo/bar/baz.txt") == 0);
+	free(path);
 }
 
 int main() {
@@ -191,5 +203,7 @@ int main() {
 	TestPathExtFile();
 	// Path;
 	TestPathJoin();
+	TestPathJoinMany();
+	TestPathJoinManyMixed();
 	return 0;
 }
