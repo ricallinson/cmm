@@ -58,6 +58,24 @@ void TestStringsConcat() {
 	free(str);
 }
 
+void TestStringsJoinNone() {
+	char *str = StringsConcat("foo", "bar", "");
+	assert(strcmp(str, "foobar") == 0);
+	free(str);
+}
+
+void TestStringsJoinSingle() {
+	char *str = StringsConcat("foo", "bar", " ");
+	assert(strcmp(str, "foo bar") == 0);
+	free(str);
+}
+
+void TestStringsJoinMany() {
+	char *str = StringsConcat("foo", "bar", " : ");
+	assert(strcmp(str, "foo : bar") == 0);
+	free(str);
+}
+
 int main() {
 	// Substring.
 	TestSubstringEmpty();
@@ -68,5 +86,9 @@ int main() {
 	TestSubstringReturnAll();
 	TestSubstringAllWithoutSize();
 	TestSubstringReturnLast();
+	// Concat.
+	TestStringsConcat()
+	// Join
+	TestStringsJoin();
 	return 0;
 }
