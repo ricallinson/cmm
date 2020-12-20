@@ -21,9 +21,11 @@ __VERY UNSTABLE__
 
 ## Setup
 
-	go install ~/workspace/src/github.com/cmm/cmmb
-	. ~/cmm.sh
-	cd ~/workspace/src/github.com/cmm/hello
+	git clone git@github.com:ricallinson/cmm.git
+	. ./cmm/cmm.sh
+	go build ./cmm/workspace/src/github.com/cmm/cmmb # Then add to execution path.
+	cd ./cmm/workspace/src/github.com/cmm/hello
+	cmm here
 	cmm test
 
 ## Usage
@@ -48,9 +50,13 @@ Create a new workspace at the given directory;
 
 	cmm here .
 
+Removes the `pkg` and `_gcov` directories;
+
+	cmm clean
+
 Download and install packages and dependencies for the given URI;
 
-	cmm get <Package URI>
+	TODO: cmm get <Package URI>
 
 Execute all `_test.c` files in the current directory;
 
@@ -58,11 +64,7 @@ Execute all `_test.c` files in the current directory;
 
 Execute all `_test.c` files in the current directory and all sub directories recursively;
 
-	cmm test ...
-
-Execute the test files in the current directory and output line coverage in `gcov` format;
-
-	cmm test -cover
+	TODO: cmm test ...
 
 Compile the files in the current directory and place the binary in the `bin` directory;
 

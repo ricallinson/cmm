@@ -200,7 +200,7 @@ func installCompile(pkg string, files []string) {
 }
 
 func generatePacakgeFiles(filePath string) []string {
-	deps := map[string]bool{} 
+	deps := map[string]bool{}
 	deps[filePath] = true
 	findFileDeps(filePath, deps)
 	files := []string{}
@@ -213,10 +213,20 @@ func generatePacakgeFiles(filePath string) []string {
 	return files
 }
 
+// Removes all temporary files.
+func clean() {
+	if len(os.Getenv("CMMPATH")) == 0 {
+		return
+	}
+	os.RemoveAll(pkgDir)
+	os.RemoveAll(covDir)
+}
+
 // Walk all "_test.c" files in the current directory to find all package dependences.
 // For each found package including the current directory package generate the build package files.
 // Compile and execute the binary collecting gcov output.
 func test(dir string) {
+	clean()
 	name := path.Base(dir) + "_test"
 	files := generatePacakgeFiles(path.Join(dir, "main_test.c"))
 	executeTest(name, files)
@@ -226,6 +236,7 @@ func test(dir string) {
 // For each found package including the current directory package generate the build package files.
 // Compile the binary.
 func install(dir string) {
+	clean()
 	name := path.Base(dir)
 	files := generatePacakgeFiles(path.Join(dir, "main.c"))
 	installCompile(name, files)
@@ -242,6 +253,12 @@ func main() {
 		dir = path.Join(srcDir, args[1])
 	}
 	switch args[0] {
+	case "clean":
+		if len(os.Getenv("CMMPATH")) == 0 {
+			fmt.Println("You must provide a command to run.")
+		} else {
+			clean()
+		}
 	case "test":
 		test(dir)
 	case "install":
