@@ -19,6 +19,13 @@ __VERY UNSTABLE__
 * The `bin` directory contains compiled binaries installed via this workspace.
 * Files ending in `_test.c` are only used by test compiles.
 
+## Setup
+
+	go install ~/workspace/src/github.com/cmm/cmmb
+	. ~/cmm.sh
+	cd ~/workspace/src/github.com/cmm/hello
+	cmm test
+
 ## Usage
 
 Prints all commands `cmm` supports;

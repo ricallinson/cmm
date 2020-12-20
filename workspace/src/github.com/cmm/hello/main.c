@@ -2,8 +2,8 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "github.com/ricallinson/math/math.h"
-#include "github.com/ricallinson/accounts/account.h"
+#include "github.com/cmm/math/math.h"
+#include "github.com/cmm/accounts/account.h"
 
 int main() {
     AccountsAccount a = AccountsMallocAccount("James", "Jones");

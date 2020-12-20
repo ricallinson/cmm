@@ -2,7 +2,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "github.com/ricallinson/math/math.h"
+#include "github.com/cmm/math/math.h"
 
 typedef struct {
     int id;
