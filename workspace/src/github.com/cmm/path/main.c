@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
-#include "github.com/cmm/strings/strings.h"
+#include "github.com/cmm/strings/main.h"
 
 // Base returns the last element of path.
 // Trailing slashes are removed before extracting the last element.

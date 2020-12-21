@@ -1,6 +1,7 @@
-// #include <stdio.h>
-// #include <stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <assert.h>
+#include <string.h>
 #include "github.com/cmm/strconv/main.h"
 
 void TestStringsFormatInt() {
@@ -34,7 +35,8 @@ void TestStringsFormatUlong() {
 }
 
 int main() {
-	// Substring.
+	TestStringsFormatInt();
+	TestStringsFormatUint();
 	TestStringsFormatUlong();
 	return 0;
 }
