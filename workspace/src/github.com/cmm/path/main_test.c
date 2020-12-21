@@ -4,6 +4,12 @@
 #include <string.h>
 #include "github.com/cmm/path/main.h"
 
+void TestPathCreate() {
+	char *path = PathCreate("/foo/bar");
+	assert(strcmp(path, "/foo/bar") == 0);
+	PathDestroy(path);
+}
+
 void TestPathBaseEmpty() {
 	char *path = PathBase("");
 	assert(strcmp(path, ".") == 0);
@@ -171,6 +177,7 @@ void TestPathJoinManyMixed() {
 }
 
 int main() {
+	TestPathCreate();
 	// Base.
 	TestPathBaseEmpty();
 	TestPathBaseRootPath();

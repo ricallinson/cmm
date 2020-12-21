@@ -4,6 +4,15 @@
 #include <stdarg.h>
 #include "github.com/cmm/strings/main.h"
 
+char *PathCreate(char *path) {
+	return StringsCreate(path);
+}
+
+int PathDestroy(char *path) {
+	free(path);
+	return 0;
+}
+
 // Base returns the last element of path.
 // Trailing slashes are removed before extracting the last element.
 // If the path is empty, Base returns ".".

@@ -6,23 +6,27 @@
 #include "github.com/cmm/accounts/account.h"
 
 int main() {
-    AccountsAccount a1 = AccountsCreateAccount("James", "Jones");
+    // Create an Account object.
+    AccountsAccount a1 = AccountsCreate("James", "Jones");
 
-    char *str1 = AccountsToChars(&a1);    
+    // Print a string version of the account and clean up memory.
+    char *str1 = AccountsToString(&a1);    
     printf("%s\n", str1);
     StringsDestroy(str1);
     
-    AccountsDestroyAccount(&a1);
+    // Clean up the memory used by the Account object.
+    AccountsDestroy(&a1);
 
-    MathNext();
+    // Create a second Account object.
+    AccountsAccount a2 = AccountsCreate("Rob", "Red");
 
-    AccountsAccount a2 = AccountsCreateAccount("Rob", "Red");
-
-    char *str2 = AccountsToChars(&a2);
+    // Print a string version of the account and clean up memory.
+    char *str2 = AccountsToString(&a2);
     printf("%s\n", str2);
     StringsDestroy(str2);
     
-    AccountsDestroyAccount(&a2);
+    // Clean up the memory used by the second Account object.
+    AccountsDestroy(&a2);
     
     return 0;
 }

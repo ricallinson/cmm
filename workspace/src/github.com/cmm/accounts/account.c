@@ -12,7 +12,7 @@ typedef struct {
     char *lastname;
 } AccountsAccount;
 
-AccountsAccount AccountsCreateAccount(char *firstname, char *lastname) {
+AccountsAccount AccountsCreate(char *firstname, char *lastname) {
     AccountsAccount a = {
         .id = MathNext(),
         .firstname = StringsCreate(firstname),
@@ -21,7 +21,7 @@ AccountsAccount AccountsCreateAccount(char *firstname, char *lastname) {
     return a;
 }
 
-int AccountsDestroyAccount(AccountsAccount *account) {
+int AccountsDestroy(AccountsAccount *account) {
     // Free all memory used.
     StringsDestroy(account->firstname);
     StringsDestroy(account->lastname);
@@ -29,7 +29,7 @@ int AccountsDestroyAccount(AccountsAccount *account) {
 }
 
 // Returns a pointer that needs freeing after use.
-char *AccountsToChars(AccountsAccount *account) {
+char *AccountsToString(AccountsAccount *account) {
     char *id = StringsFormatUlong(account->id);
     char *name = StringsJoin(account->firstname, account->lastname, " ");
     char *res = StringsJoin(id, name, ": ");
