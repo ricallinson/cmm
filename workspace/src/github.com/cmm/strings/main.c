@@ -1,3 +1,5 @@
+// Module Strings.
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -48,6 +50,7 @@ char *StringsConcat(char *a, char *b) {
 	return res;
 }
 
+// 
 char *StringsJoin(char *a, char *b, char *sep) {
 	char *build = StringsConcat(a, sep);
 	char *res = StringsConcat(build, b);

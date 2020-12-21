@@ -3,14 +3,15 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "github.com/cmm/math/math.h"
+#include "github.com/cmm/strings/strings.h"
 
 typedef struct {
-    int id;
+    unsigned long id;
     char *firstname;
     char *lastname;
 } AccountsAccount;
 
-AccountsAccount AccountsMallocAccount(char *firstname, char *lastname) {
+AccountsAccount AccountsCreateAccount(char *firstname, char *lastname) {
     AccountsAccount a = {
         .id = MathNext(),
         .firstname = firstname,
@@ -19,14 +20,20 @@ AccountsAccount AccountsMallocAccount(char *firstname, char *lastname) {
     return a;
 }
 
-int AccountsFreeAccount(AccountsAccount *account) {
+int AccountsDestroyAccount(AccountsAccount *account) {
     // Free all memory used.
     return 0;
 }
 
 // Returns a pointer that needs freeing after use.
 char *AccountsToChars(AccountsAccount *account) {
-    char *s = malloc(30); // Get length of memory required for string.
-    sprintf(s, "%d: %s %s", account->id, account->firstname, account->lastname);
-    return s;
+    char *id = StringsFormatUlong(account->id);
+    char *name = StringsJoin(account->firstname, account->lastname, " ");
+    char *res = StringsJoin(id, name, ": ");
+
+    // Free local scope memory.
+    free(id);
+    free(name);
+
+    return res;
 }

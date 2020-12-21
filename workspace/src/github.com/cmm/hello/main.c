@@ -6,16 +6,19 @@
 #include "github.com/cmm/accounts/account.h"
 
 int main() {
-    AccountsAccount a = AccountsMallocAccount("James", "Jones");
-    char *s1 = AccountsToChars(&a);    
-    printf("%s\n", s1);
-    AccountsFreeAccount(&a);
-    free(s1);
+    AccountsAccount a1 = AccountsCreateAccount("James", "Jones");
+    char *str1 = AccountsToChars(&a1);    
+    printf("%s\n", str1);
+    free(str1);
+    AccountsDestroyAccount(&a1);
+
     MathNext();
-    AccountsAccount b = AccountsMallocAccount("Rob", "Red");
-    char *s2 = AccountsToChars(&b);
-    printf("%s\n", s2);
-    AccountsFreeAccount(&b);
-    free(s2);
+
+    AccountsAccount a2 = AccountsCreateAccount("Rob", "Red");
+    char *str2 = AccountsToChars(&a2);
+    printf("%s\n", str2);
+    free(str2);
+    AccountsDestroyAccount(&a2);
+    
     return 0;
 }

@@ -1,7 +1,7 @@
 // Module Math.
 
 // Private attribute.
-int current = 0;
+unsigned long current = 0;
 
 // Private function.
 int getCurrent() {
