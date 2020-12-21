@@ -4,6 +4,26 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Create memory for the given string.
+char *StringsCreate(char *str) {
+	const int strSize = strlen(str);
+	char *res = malloc(strSize + 1);
+	for (int i = 0; i < strSize; i++) {
+		res[i] = str[i];
+	}
+	// Make sure the new string is terminated with a null byte.
+	res[strSize] = '\0';
+	// printf("%s\n", res);
+	return res;
+}
+
+// Free memory for the given string.
+int *StringsDestroy(char *str) {
+    // Free all memory used.
+    free(str);
+    return 0;
+}
+
 // 
 char *StringsSubstring(char *str, int from, int to) {
 	const int strSize = strlen(str);
@@ -39,7 +59,7 @@ char *StringsSubstring(char *str, int from, int to) {
 char *StringsConcat(char *a, char *b) {
 	const int sizeA = strlen(a);
 	const int sizeB = strlen(b);
-	char *res = malloc(sizeA + sizeB);
+	char *res = malloc(sizeA + sizeB + 1);
 	for (int i = 0; i < sizeA; i++) {
 		res[i] = a[i];
 	}

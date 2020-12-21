@@ -3,7 +3,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "github.com/cmm/math/math.h"
-#include "github.com/cmm/strings/strings.h"
+#include "github.com/cmm/strings/main.h"
+#include "github.com/cmm/strconv/main.h"
 
 typedef struct {
     unsigned long id;
@@ -14,14 +15,16 @@ typedef struct {
 AccountsAccount AccountsCreateAccount(char *firstname, char *lastname) {
     AccountsAccount a = {
         .id = MathNext(),
-        .firstname = firstname,
-        .lastname = lastname
+        .firstname = StringsCreate(firstname),
+        .lastname = StringsCreate(lastname)
     };
     return a;
 }
 
 int AccountsDestroyAccount(AccountsAccount *account) {
     // Free all memory used.
+    StringsDestroy(account->firstname);
+    StringsDestroy(account->lastname);
     return 0;
 }
 
@@ -32,8 +35,8 @@ char *AccountsToChars(AccountsAccount *account) {
     char *res = StringsJoin(id, name, ": ");
 
     // Free local scope memory.
-    free(id);
-    free(name);
+    StringsDestroy(id);
+    StringsDestroy(name);
 
     return res;
 }

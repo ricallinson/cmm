@@ -15,7 +15,7 @@ void TestStringsFormatInt() {
 }
 
 void TestStringsFormatUint() {
-	char *str1 = StringsFormatUint(1);
+	char *str1 = StringsFormatUint((unsigned int)1);
 	assert(strcmp(str1, "1") == 0);
 	free(str1);
 
