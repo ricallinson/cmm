@@ -6,7 +6,7 @@
 
 // 
 char *StringsSubstring(char *str, int from, int to) {
-	int strSize = strlen(str);
+	const int strSize = strlen(str);
 	if (from < 0) {
 		from = strSize + from + 1;
 	}
@@ -37,8 +37,8 @@ char *StringsSubstring(char *str, int from, int to) {
 
 //
 char *StringsConcat(char *a, char *b) {
-	int sizeA = strlen(a);
-	int sizeB = strlen(b);
+	const int sizeA = strlen(a);
+	const int sizeB = strlen(b);
 	char *res = malloc(sizeA + sizeB);
 	for (int i = 0; i < sizeA; i++) {
 		res[i] = a[i];
